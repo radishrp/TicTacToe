@@ -16,35 +16,172 @@ typedef struct tictactoeboard_description {
         }tictactoeboard; //structure of tictactoeboard maybe used in later edits
 int checkwin(char *, char);
 void winmessage(int, char);
-
+int findwinningmove(char *,char,int);
+int numberofmovesleft(char *);
+char player;
+makemove(char *,int, char);
 
 
 
 
 
 int main(){
-
-char inputdata[]="XXX OO XO";
+int m = 0;
+char inputdata[]="X XOOX O ";
 display_tictactoe_boardarray(inputdata);
-char player = 'X';
 int win_position_return_value = checkwin(inputdata,player);
-winmessage(win_position_return_value,player);
+//winmessage(win_position_return_value,player);
+//numberofmovesleft(inputdata);
+//findwinningmove(inputdata,player,3);
+TicTacToeRun();
 
 
 
 
 };
 
+int TicTacToeRun(char *inputdata){
+    int i=0;
+for(i=0;i<6;i++){
+    humanmakemove(inputdata,'X');
+    if((numberofmovesleft(inputdata))==0){
+       return 0;}
+    else{
+            computermove(inputdata,'O');
+    }
+
+}
+
+}
+
+
+
+
+void humanmakemove(char *inputdata, char player){
+    int num=0;
+    numberofmovesleft(inputdata);
+    printf("[0][1][2]\n[3][4][5]\n[6][7][8]\nYour turn. Where do you want to place?\nType in a valid number listed above.\nPlacement:");
+    int placement;
+    scanf("%d",&placement);
+        if(placement==0||placement==1||placement==2||placement==3||placement==4||placement==5||placement==6||placement==7||placement==8)
+            {
+            makemove(inputdata,placement,player);
+
+            }
+        else{
+            printf("Error. Pick a valid number.\n");
+        }
+                                                };
+
+int numberofmovesleft(char *inputdata){
+int i, j=0;
+
+for(i=0;i<10;i++){
+    if(inputdata[i]== ' '){
+        j++;
+                            };
+                };
+    printf("Turn %d.\n%d turns left.\n\n",10-j,j);
+    return j;
+                                        };
+
+int makemove(char *inputdata,int placement, char player){
+       int i = placement;
+    if((inputdata[i])!= ' '){
+            printf("Error. Choose valid placement.\n");
+    humanmakemove(inputdata,player);
+    }
+    else{
+            inputdata[i] = player;
+
+
+    //switch(placement){
+   // case 'a' : i=0; break;
+   // case 'b' : i=1; break;
+    //case 'c' : i=2; break;
+   // case 'd' : i=3; break;
+   // case 'e' : i=4; break;
+   // case 'f' : i=5; break;
+  //  case 'g' : i=6; break;
+   // case 'h' : i=7; break;
+   // case 'i' : i=8; break;
+   // default: printf("error"); break;}
+
+display_tictactoe_boardarray(inputdata);
+int win_position_return_value = checkwin(inputdata,player);
+winmessage(win_position_return_value,player);
+        }
+}
+
+void computermove(char *inputdata,char player){
+int depth = numberofmovesleft(inputdata);
+findwinningmove(inputdata,player,depth);
+}
+
+int findwinningmove(char *inputdata,char player,int depth){
+char deptharray[10];
+int a,b,c,d,e,f,g,h,i;
+deptharray[0]=a;
+deptharray[1]=b;
+deptharray[2]=c;
+deptharray[3]=d;
+deptharray[4]=e;
+deptharray[5]=f;
+deptharray[6]=g;
+deptharray[7]=h;
+deptharray[8]=i;
+deptharray[9]="/0";
+char *depth;
+char *deptharraypointer= deptharray;
+char testposition[10];
+int i,j, win_result;
+
+for(i=0;i<9;i++){
+    if(inputdata[i]== ' '){
+       strcpy(testposition, inputdata);
+       testposition[i]=player;
+       win_result=checkwin(testposition,player);
+       if(win_result){
+        makemove(inputdata,i,'O');
+        break;
+       }
+        else{
+                for(j=0;j<9;j++){
+                    if(testposition[i]== ' '){
+                    testposition[i]='X';
+                    win_result=checkwin(testposition,player);
+                                        }
+                                        else{for(k=0;k<9;k++){
+                            if(testposition[i]== ' '){
+                            testposition[i]='X';
+                            win_result=checkwin(testposition,player);
+
+                                        }
+
+       }
+
+        }
+
+        }
+       }
+
+       };
+
+
+
+
+
+
 void winmessage(int win_position_return_value, char player){
 switch(win_position_return_value){
-    case 10 : printf("Horizontal win on Row 1 by %c!",player); break;
-    case 13 : printf("Horizontal win on Row 2 by %c!",player); break;
-    case 16 : printf("Horizontal win on Row 3 by %c!",player); break;
-    case 20 : printf("Vertical win on Column 1 by %c!",player); break;
-    case 23 : printf("Vertical win on Column 2 by %c!",player); break;
-    case 26 : printf("Vertical win on Column 3 by %c!",player); break;
-    case 30 : printf("Diagonal win by %c!", player); break;
-    default: printf("Error."); break;
+    case 10 : printf("Horizontal win on Row 1 by %c!\n",player); return 100; break;
+    case 13 : printf("Horizontal win on Row 2 by %c!\n",player); return 100; break;
+    case 16 : printf("Horizontal win on Row 3 by %c!\n",player); return 100; break;
+    case 20 : printf("Vertical win on Column 1 by %c!\n",player); return 100; break;
+    case 23 : printf("Vertical win on Column 2 by %c!\n",player); return 100; break;
+    case 26 : printf("Vertical win on Column 3 by %c!\n",player); return 100; break;
+    case 30 : printf("Diagonal win by %c!\n", player); return 100; break;
+    default: printf("No win condition.\n"); return 100; break;
 
 };
 };
@@ -67,7 +204,7 @@ void display_tictactoe_boardarray(char *inputdata) {
             };
 
     };
-
+printf("\n");
     for(i=0;i<30;i++){
         printf("%c",tictactoe_boardarray[i]);
         if(i==9||i==19||i==29){
@@ -94,6 +231,6 @@ int checkwin(char *inputdata,char player){
                                                                                                                                     };
 
 return 0;
-}
+};
 
      // for loop allows input into the board
