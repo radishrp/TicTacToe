@@ -11,15 +11,31 @@
       //          board->square[i][j]= '_';
         //    };}}
 
-typedef struct tictactoeboard_description {
-        char square[3][3];
-        }tictactoeboard; //structure of tictactoeboard maybe used in later edits
+//typedef struct tictactoeboard_description {
+//        char square[3][3];
+ //       }tictactoeboard; //structure of tictactoeboard maybe used in later edits
 int checkwin(char *, char);
 void winmessage(int, char);
 int findwinningmove(char *,char,int);
 int numberofmovesleft(char *);
 char player;
+
 makemove(char *,int, char);
+int deptharray[10];
+int a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0,i=0;
+deptharray[0]=a;
+deptharray[1]=b;
+deptharray[2]=c;
+deptharray[3]=d;
+deptharray[4]=e;
+deptharray[5]=f;
+deptharray[6]=g;
+deptharray[7]=h;
+deptharray[8]=i;
+deptharray[9]="/0";
+char *p= deptharray;
+char testposition[10];
+int j=0, win_result;
 
 
 
@@ -27,15 +43,29 @@ makemove(char *,int, char);
 
 int main(){
 int m = 0;
-char inputdata[]="X XOOX O ";
+char inputdata[]="X XOOX OX";
 display_tictactoe_boardarray(inputdata);
-int win_position_return_value = checkwin(inputdata,player);
-//winmessage(win_position_return_value,player);
+//int win_position_return_value = checkwin(inputdata,player);
+//winmessage(win_position_return_value,'X');
 //numberofmovesleft(inputdata);
 //findwinningmove(inputdata,player,3);
-TicTacToeRun();
+findwinningmove(inputdata,'X',numberofmovesleft(inputdata));
 
-
+char deptharray[10];
+int a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0,i=0;
+deptharray[0]=a;
+deptharray[1]=b;
+deptharray[2]=c;
+deptharray[3]=d;
+deptharray[4]=e;
+deptharray[5]=f;
+deptharray[6]=g;
+deptharray[7]=h;
+deptharray[8]=i;
+deptharray[9]="/0";
+char *p= deptharray;
+char testposition[10];
+int j=0, win_result;
 
 
 };
@@ -119,53 +149,33 @@ findwinningmove(inputdata,player,depth);
 }
 
 int findwinningmove(char *inputdata,char player,int depth){
-char deptharray[10];
-int a,b,c,d,e,f,g,h,i;
-deptharray[0]=a;
-deptharray[1]=b;
-deptharray[2]=c;
-deptharray[3]=d;
-deptharray[4]=e;
-deptharray[5]=f;
-deptharray[6]=g;
-deptharray[7]=h;
-deptharray[8]=i;
-deptharray[9]="/0";
-char *depth;
-char *deptharraypointer= deptharray;
-char testposition[10];
-int i,j, win_result;
-
-for(i=0;i<9;i++){
-    if(inputdata[i]== ' '){
+for(*p=0;*p<9;*p++){
+    if(inputdata[*p]== ' '){
        strcpy(testposition, inputdata);
-       testposition[i]=player;
+       testposition[*p]=player;
        win_result=checkwin(testposition,player);
-       if(win_result){
-        makemove(inputdata,i,'O');
-        break;
-       }
+       if((win_result)!=0){
+        printf("%c",*p);
+        }
         else{
-                for(j=0;j<9;j++){
-                    if(testposition[i]== ' '){
-                    testposition[i]='X';
-                    win_result=checkwin(testposition,player);
-                                        }
-                                        else{for(k=0;k<9;k++){
-                            if(testposition[i]== ' '){
-                            testposition[i]='X';
-                            win_result=checkwin(testposition,player);
-
-                                        }
-
+                if(player = 'O')
+                    {
+                    player = 'X';
+                }
+                else if(player = 'X')
+                    {
+                    player = 'O';
+                };
+                p++;
+                printf("1");
+                for(j=depth;j<1;j--){
+        winningmoverecursion(inputdata,player);}}
        }
-
-        }
-
         }
        }
 
-       };
+       }
+
 
 
 
@@ -178,8 +188,8 @@ switch(win_position_return_value){
     case 13 : printf("Horizontal win on Row 2 by %c!\n",player); return 100; break;
     case 16 : printf("Horizontal win on Row 3 by %c!\n",player); return 100; break;
     case 20 : printf("Vertical win on Column 1 by %c!\n",player); return 100; break;
-    case 23 : printf("Vertical win on Column 2 by %c!\n",player); return 100; break;
-    case 26 : printf("Vertical win on Column 3 by %c!\n",player); return 100; break;
+    case 21 : printf("Vertical win on Column 2 by %c!\n",player); return 100; break;
+    case 22 : printf("Vertical win on Column 3 by %c!\n",player); return 100; break;
     case 30 : printf("Diagonal win by %c!\n", player); return 100; break;
     default: printf("No win condition.\n"); return 100; break;
 
