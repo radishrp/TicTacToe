@@ -16,59 +16,38 @@
  //       }tictactoeboard; //structure of tictactoeboard maybe used in later edits
 int checkwin(char *, char);
 void winmessage(int, char);
-int findwinningmove(char *,char,int);
+int findwinningmove(char *,char);
 int numberofmovesleft(char *);
 char player;
+int makemove(char*,int,char);
+int recursiveloop(char*,char);
 
-makemove(char *,int, char);
-int deptharray[10];
-int a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0,i=0;
-deptharray[0]=a;
-deptharray[1]=b;
-deptharray[2]=c;
-deptharray[3]=d;
-deptharray[4]=e;
-deptharray[5]=f;
-deptharray[6]=g;
-deptharray[7]=h;
-deptharray[8]=i;
-deptharray[9]="/0";
-char *p= deptharray;
-char testposition[10];
-int j=0, win_result;
+
 
 
 
 
 
 int main(){
-int m = 0;
-char inputdata[]="X XOOX OX";
+
+char inputdata[]="X XOOX O ";
 display_tictactoe_boardarray(inputdata);
-//int win_position_return_value = checkwin(inputdata,player);
-//winmessage(win_position_return_value,'X');
-//numberofmovesleft(inputdata);
-//findwinningmove(inputdata,player,3);
-findwinningmove(inputdata,'X',numberofmovesleft(inputdata));
-
-char deptharray[10];
-int a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0,i=0;
-deptharray[0]=a;
-deptharray[1]=b;
-deptharray[2]=c;
-deptharray[3]=d;
-deptharray[4]=e;
-deptharray[5]=f;
-deptharray[6]=g;
-deptharray[7]=h;
-deptharray[8]=i;
-deptharray[9]="/0";
-char *p= deptharray;
-char testposition[10];
-int j=0, win_result;
+        char test_position[10];
+       char test_position2[10];
+       strcpy(test_position, inputdata);
+       int i=0;
+       printf("%s",inputdata);
+printf("%d",recursiveloop(inputdata,'X'));
+                    }
 
 
-};
+
+
+
+
+
+
+
 
 int TicTacToeRun(char *inputdata){
     int i=0;
@@ -145,37 +124,56 @@ winmessage(win_position_return_value,player);
 
 void computermove(char *inputdata,char player){
 int depth = numberofmovesleft(inputdata);
-findwinningmove(inputdata,player,depth);
+findwinningmove(inputdata,player);
 }
 
-int findwinningmove(char *inputdata,char player,int depth){
-for(*p=0;*p<9;*p++){
-    if(inputdata[*p]== ' '){
-       strcpy(testposition, inputdata);
-       testposition[*p]=player;
-       win_result=checkwin(testposition,player);
-       if((win_result)!=0){
-        printf("%c",*p);
-        }
-        else{
-                if(player = 'O')
-                    {
-                    player = 'X';
+int findwinningmove(char *inputdata,char player){
+    //int a,b,c,d,e,f,g,h,i,j;
+ //   char deptharray[8][7][6][5][4][3][2][1];
+
+ //   for(a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0;){}
+ //   deptharray[a][b][c][d][e][f][g][h]
+ //  if(inputdata[i]== ' '){
+  //     strcpy(testposition, inputdata);
+   //    testposition[i]=player;
+   //    win_result=checkwin(testposition,player);
+
+ }
+
+
+int  recursiveloop(char *test_position,char player){
+int i;
+long int j=0;
+char winchance=1000
+char test_position2[10];
+        for (i = 0; i < 9; i++) {
+            if (test_position[i] == ' ') {
+                strcpy(test_position2,test_position);
+                test_position2[i] = player;
+                int win_result_return_value = checkwin(test_position2, player);
+                printf("The result of playing %c at position %d is: %d  \n",
+                    player, i, win_result_return_value);
+                display_tictactoe_boardarray(test_position);
+                if((player == 'X') && (win_result_return_value > 1)){
+                winchance - 1;
                 }
-                else if(player = 'X')
-                    {
-                    player = 'O';
-                };
-                p++;
-                printf("1");
-                for(j=depth;j<1;j--){
-        winningmoverecursion(inputdata,player);}}
-       }
-        }
-       }
+                if((player == 'X') && (win_result_return_value > 1)){
+                winchance + 1;
+                }
 
-       }
+                if(numberofmovesleft(test_position2)!=0){
+                    if(player == 'X'){
+                        player = 'O';
+                        recursiveloop(test_position2,player);
+                    }
+                    else{
+                        player ='X';
+                        recursiveloop(test_position2,player);
+                    }
 
+                }
+            }
+   }}
 
 
 
