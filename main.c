@@ -21,6 +21,7 @@ int numberofmovesleft(char *);
 char player;
 int makemove(char*,int,char);
 int recursiveloop(char*,char);
+void computermove(char *);
 
 
 
@@ -29,15 +30,12 @@ int recursiveloop(char*,char);
 
 
 int main(){
+    int win_result_return_value;
 
-char inputdata[]="X XOOX O ";
+char inputdata[]="         ";
 display_tictactoe_boardarray(inputdata);
-        char test_position[10];
-       char test_position2[10];
-       strcpy(test_position, inputdata);
-       int i=0;
-       printf("%s",inputdata);
-printf("%d",recursiveloop(inputdata,'X'));
+TicTacToeRun(inputdata);
+
                     }
 
 
@@ -51,17 +49,28 @@ printf("%d",recursiveloop(inputdata,'X'));
 
 int TicTacToeRun(char *inputdata){
     int i=0;
-for(i=0;i<6;i++){
-    humanmakemove(inputdata,'X');
-    if((numberofmovesleft(inputdata))==0){
-       return 0;}
-    else{
-            computermove(inputdata,'O');
-    }
+    int win_result_return_value;
+for(i=0;i<9;i++){
+        if(i%2==0){
+                humanmakemove(inputdata,'X');
+                    printf("%s",inputdata);
+                if(win_result_return_value != 0){
+                    break;
+                }
+        }
+        else{
+            computermove(inputdata);
+        printf("%s",inputdata);
+        if(win_result_return_value >0){
+            break;
+        }
 
+};
+};
+label:
+    winmessage(win_result_return_value,player);
 }
 
-}
 
 
 
@@ -70,15 +79,17 @@ void humanmakemove(char *inputdata, char player){
     int num=0;
     numberofmovesleft(inputdata);
     printf("[0][1][2]\n[3][4][5]\n[6][7][8]\nYour turn. Where do you want to place?\nType in a valid number listed above.\nPlacement:");
-    int placement;
-    scanf("%d",&placement);
-        if(placement==0||placement==1||placement==2||placement==3||placement==4||placement==5||placement==6||placement==7||placement==8)
+    scanf("%d",&num);
+            if((num==0||num==1||num==2||num==3||num==4||num==5||num==6||num==7||num==8))
             {
-            makemove(inputdata,placement,player);
+                if(inputdata[num]= ' '){
+            makemove(inputdata,num,player);
+            };
 
-            }
+        }
         else{
             printf("Error. Pick a valid number.\n");
+
         }
                                                 };
 
@@ -96,84 +107,59 @@ for(i=0;i<10;i++){
 
 int makemove(char *inputdata,int placement, char player){
        int i = placement;
-    if((inputdata[i])!= ' '){
-            printf("Error. Choose valid placement.\n");
-    humanmakemove(inputdata,player);
-    }
-    else{
             inputdata[i] = player;
-
-
-    //switch(placement){
-   // case 'a' : i=0; break;
-   // case 'b' : i=1; break;
-    //case 'c' : i=2; break;
-   // case 'd' : i=3; break;
-   // case 'e' : i=4; break;
-   // case 'f' : i=5; break;
-  //  case 'g' : i=6; break;
-   // case 'h' : i=7; break;
-   // case 'i' : i=8; break;
-   // default: printf("error"); break;}
-
+            printf("Last move:\n");
 display_tictactoe_boardarray(inputdata);
 int win_position_return_value = checkwin(inputdata,player);
 winmessage(win_position_return_value,player);
-        }
-}
+        ;
+};
 
-void computermove(char *inputdata,char player){
-int depth = numberofmovesleft(inputdata);
-findwinningmove(inputdata,player);
+void computermove(char *inputdata){
+    findwinningmove(inputdata,'O');
+    findwinningmove(inputdata,'X');
+    findnextbestmove(inputdata);
 }
 
 int findwinningmove(char *inputdata,char player){
-    //int a,b,c,d,e,f,g,h,i,j;
- //   char deptharray[8][7][6][5][4][3][2][1];
+int i, win_result_return_value;
+char test_position[10];
+for (i = 0; i < 9; i++) {
+            if (inputdata[i] == ' ') {
+                strcpy(test_position,inputdata);
+                test_position[i] = player;
+                int win_result_return_value = checkwin(test_position, player);
+                if(win_result_return_value != 0){
+                    makemove(inputdata,i,'O');
+                    break;
+                }
 
- //   for(a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0;){}
- //   deptharray[a][b][c][d][e][f][g][h]
- //  if(inputdata[i]== ' '){
-  //     strcpy(testposition, inputdata);
-   //    testposition[i]=player;
-   //    win_result=checkwin(testposition,player);
+ };
+};};
 
- }
-
-
-int  recursiveloop(char *test_position,char player){
-int i;
-long int j=0;
-char winchance=1000
-char test_position2[10];
+int findnextbestmove(char *inputdata){
+    int i;
+    if(inputdata[4]==' '){
+        makemove(inputdata,4,'O');
+    }
+    else{
         for (i = 0; i < 9; i++) {
-            if (test_position[i] == ' ') {
-                strcpy(test_position2,test_position);
-                test_position2[i] = player;
-                int win_result_return_value = checkwin(test_position2, player);
-                printf("The result of playing %c at position %d is: %d  \n",
-                    player, i, win_result_return_value);
-                display_tictactoe_boardarray(test_position);
-                if((player == 'X') && (win_result_return_value > 1)){
-                winchance - 1;
-                }
-                if((player == 'X') && (win_result_return_value > 1)){
-                winchance + 1;
-                }
-
-                if(numberofmovesleft(test_position2)!=0){
-                    if(player == 'X'){
-                        player = 'O';
-                        recursiveloop(test_position2,player);
-                    }
-                    else{
-                        player ='X';
-                        recursiveloop(test_position2,player);
-                    }
+            if (inputdata[i] == 'X') {
+                if ((i<9) && (inputdata[i+1]) == ' '){
+                    makemove(inputdata,(i+1),'O');
 
                 }
-            }
-   }}
+                if ((i>0) && (inputdata[i+1]) == ' '){
+                    makemove(inputdata,(i-1),'O');
+                    break;
+                }
+                else {
+                        continue;
+                }
+    }
+};
+
+}}
 
 
 
@@ -182,14 +168,14 @@ char test_position2[10];
 
 void winmessage(int win_position_return_value, char player){
 switch(win_position_return_value){
-    case 10 : printf("Horizontal win on Row 1 by %c!\n",player); return 100; break;
-    case 13 : printf("Horizontal win on Row 2 by %c!\n",player); return 100; break;
-    case 16 : printf("Horizontal win on Row 3 by %c!\n",player); return 100; break;
-    case 20 : printf("Vertical win on Column 1 by %c!\n",player); return 100; break;
-    case 21 : printf("Vertical win on Column 2 by %c!\n",player); return 100; break;
-    case 22 : printf("Vertical win on Column 3 by %c!\n",player); return 100; break;
-    case 30 : printf("Diagonal win by %c!\n", player); return 100; break;
-    default: printf("No win condition.\n"); return 100; break;
+    case 10 : printf("Horizontal win on Row 1 by %c!\n",player); return 0;
+    case 13 : printf("Horizontal win on Row 2 by %c!\n",player); return 0;
+    case 16 : printf("Horizontal win on Row 3 by %c!\n",player); return 0;
+    case 20 : printf("Vertical win on Column 1 by %c!\n",player); return 0;
+    case 21 : printf("Vertical win on Column 2 by %c!\n",player); return 0;
+    case 22 : printf("Vertical win on Column 3 by %c!\n",player); return 0;
+    case 30 : printf("Diagonal win by %c!\n", player); return 0;
+    default: printf("No win condition.\n"); return 0;
 
 };
 };
