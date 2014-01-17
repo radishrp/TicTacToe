@@ -21,7 +21,8 @@ int numberofmovesleft(char *);
 char player;
 int makemove(char*,int,char);
 int recursiveloop(char*,char);
-void computermove(char *);
+int computermove(char *);
+int aichoice;
 
 
 
@@ -32,10 +33,10 @@ void computermove(char *);
 int main(){
     int win_result_return_value;
 
-char inputdata[]="         ";
+char inputdata[]="  X O    ";
 display_tictactoe_boardarray(inputdata);
-TicTacToeRun(inputdata);
-
+    int aichoice = 10;
+    TicTacToeRun(inputdata);
                     }
 
 
@@ -49,27 +50,18 @@ TicTacToeRun(inputdata);
 
 int TicTacToeRun(char *inputdata){
     int i=0;
-    int win_result_return_value;
-for(i=0;i<9;i++){
-        if(i%2==0){
-                humanmakemove(inputdata,'X');
-                    printf("%s",inputdata);
-                if(win_result_return_value != 0){
-                    break;
-                }
-        }
-        else{
-            computermove(inputdata);
-        printf("%s",inputdata);
-        if(win_result_return_value >0){
-            break;
-        }
 
+                humanmakemove(inputdata,'X');
+            computermove(inputdata);
+                            humanmakemove(inputdata,'X');
+            computermove(inputdata);
+                            humanmakemove(inputdata,'X');
+            computermove(inputdata);
+                            humanmakemove(inputdata,'X');
+            computermove(inputdata);
+                            humanmakemove(inputdata,'X');
 };
-};
-label:
-    winmessage(win_result_return_value,player);
-}
+
 
 
 
@@ -80,17 +72,8 @@ void humanmakemove(char *inputdata, char player){
     numberofmovesleft(inputdata);
     printf("[0][1][2]\n[3][4][5]\n[6][7][8]\nYour turn. Where do you want to place?\nType in a valid number listed above.\nPlacement:");
     scanf("%d",&num);
-            if((num==0||num==1||num==2||num==3||num==4||num==5||num==6||num==7||num==8))
-            {
-                if(inputdata[num]= ' '){
             makemove(inputdata,num,player);
-            };
 
-        }
-        else{
-            printf("Error. Pick a valid number.\n");
-
-        }
                                                 };
 
 int numberofmovesleft(char *inputdata){
@@ -106,20 +89,41 @@ for(i=0;i<10;i++){
                                         };
 
 int makemove(char *inputdata,int placement, char player){
-       int i = placement;
-            inputdata[i] = player;
+    printf("%d",placement);
+       if (inputdata[placement]==' '){
+            inputdata[placement] = player;
             printf("Last move:\n");
-display_tictactoe_boardarray(inputdata);
-int win_position_return_value = checkwin(inputdata,player);
-winmessage(win_position_return_value,player);
-        ;
+            display_tictactoe_boardarray(inputdata);
+            int win_position_return_value = checkwin(inputdata,player);
+            winmessage(win_position_return_value,player);
+                             }
+        else{
+            printf("ERROR TRY AGAIN!!\n\n");
+            humanmakemove(inputdata,'X');
+        }
 };
 
-void computermove(char *inputdata){
-    findwinningmove(inputdata,'O');
+int computermove(char *inputdata){
+    aichoice=findwinningmove(inputdata,'O');
+    if(aichoice!=10){
+            printf("lol");
+         makemove(inputdata,aichoice,'O');
+         aichoice=1;
+         return 0;
+             }
+    if(aichoice==10){
     findwinningmove(inputdata,'X');
+        if(aichoice!=10){
+            makemove(inputdata,aichoice,'O');
+            aichoice=1;
+            return 0;
+        }
+    }
+    if(aichoice==10){
     findnextbestmove(inputdata);
-}
+    }
+
+    }
 
 int findwinningmove(char *inputdata,char player){
 int i, win_result_return_value;
@@ -130,35 +134,53 @@ for (i = 0; i < 9; i++) {
                 test_position[i] = player;
                 int win_result_return_value = checkwin(test_position, player);
                 if(win_result_return_value != 0){
-                    makemove(inputdata,i,'O');
+                    aichoice = i;
+                    return aichoice;
                     break;
                 }
+            else{
+                continue;
+
+            }
 
  };
-};};
+};
+aichoice=10;
+return aichoice;
+};
 
 int findnextbestmove(char *inputdata){
-    int i;
+    int i, aichoice2=1;
     if(inputdata[4]==' '){
         makemove(inputdata,4,'O');
+        return 0;
     }
     else{
-        for (i = 0; i < 9; i++) {
+        for (i = 0; i < 9; i+=2) {
             if (inputdata[i] == 'X') {
                 if ((i<9) && (inputdata[i+1]) == ' '){
                     makemove(inputdata,(i+1),'O');
-
-                }
-                if ((i>0) && (inputdata[i+1]) == ' '){
-                    makemove(inputdata,(i-1),'O');
+                    aichoice2=0;
                     break;
-                }
+                                                     }
+                if ((i>0) && (inputdata[i-1]) == ' '){
+                    makemove(inputdata,(i-1),'O');
+                    aichoice2=0;
+                    break;
+                                                     }
                 else {
                         continue;
+                     }
+                                    }
+                                };
+        if(aichoice2==0){ ///CHECK HERE THERES A PROBLEM WITH DOUBLE MOVES
+            for(i=0;i<9;i+=2){
+                if(inputdata[i]==' '){
+                    inputdata[i]='O';
+                    break;
                 }
+            }
     }
-};
-
 }}
 
 
